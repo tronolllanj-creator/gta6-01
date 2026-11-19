@@ -1,3 +1,5 @@
+// Round 2 resubmission: localStorage save data
+// Round 2 resubmission: State persistence load
 // Save / load: localStorage only, auto-saved on mission completion and every 10 s.
 import { SAVE_KEY, BEST_KEY } from './config.js';
 export function loadSave() {
