@@ -2,8 +2,6 @@
 [![rank](https://make.fun/badge/gta6-01/tronolllanj-creator/gta6-01/rank.svg)](https://make.fun/bounty/gta6-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-01)
 [![reward](https://make.fun/badge/gta6-01/tronolllanj-creator/gta6-01/reward.svg)](https://make.fun/bounty/gta6-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-01)
 
-> Round 2 resubmission: Project entry readme
-> Round 2 resubmission: Documentation for game
 # SOLMAR BAY — Streets of Solmar Bay
 
 An original open-world crime game for make.fun gta6-01 ("Make GTA 6", $1,666). A complete
@@ -25,7 +23,7 @@ own her driving. Eight jobs. One way out.
   sight to cool off.
 - **Missions + story** — 8 jobs from Rosa's Garage (press E there): courier runs, a
   getaway, a dockside fight with the Jackals, a bank score, and the final Marina run.
-  Each pays cash; the job board (Tab) tracks them.
+  Each pays cash; the job board (Tab) tracks them all.
 - **Combat** — pistol (click to shoot, ammo crates restock), punching when you're dry,
   rival gang members who shoot back.
 - **HUD with minimap** — cash, health, ammo, wanted stars, mission tracker, speedometer,
