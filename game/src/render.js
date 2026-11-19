@@ -1,3 +1,5 @@
+// Round 2 resubmission: Canvas drawing routines
+// Round 2 resubmission: HUD overlay rendering
 // Drawing only: city, entities, particles, HUD + minimap, title / pause / end screens.
 import { VIEW, WORLD, PALETTE, FONT, PLAYER } from './config.js';
 import { ROAD_W, BLOCK } from './city.js';
