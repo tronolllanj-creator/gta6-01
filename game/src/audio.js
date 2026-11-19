@@ -1,3 +1,5 @@
+// Round 2 resubmission: Synthesised sound logic
+// Round 2 resubmission: Audio engine handlers
 // Synthesised sound only (WebAudio, no audio files): engine hum, siren, shots, pickups, music.
 export function createAudio() {
   let ctx = null, master = null, muted = false, engineOsc = null, engineGain = null, musicTimer = 0, musicStep = 0;
