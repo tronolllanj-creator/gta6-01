@@ -1,3 +1,5 @@
+// Round 2 resubmission: Game tuning parameters
+// Round 2 resubmission: Config constants
 // Solmar Bay — tuning, palette and shared constants. One job: numbers and colours.
 export const STEP = 1 / 60;
 export const WORLD = { width: 3600, height: 2600 };
