@@ -1,3 +1,5 @@
+// Round 2 resubmission: Keyboard input handling
+// Round 2 resubmission: Mouse event capture
 // Keyboard + mouse input. Held keys give a move vector; one-shot presses are queued flags.
 export const ACTION_CONFIRM = 1, ACTION_PAUSE = 2, ACTION_ENTER = 4, ACTION_MISSION = 8, ACTION_MUTE = 16;
 const UP = new Set(['ArrowUp', 'KeyW']), DOWN = new Set(['ArrowDown', 'KeyS']);
