@@ -2,6 +2,8 @@
 [![rank](https://make.fun/badge/gta6-01/tronolllanj-creator/gta6-01/rank.svg)](https://make.fun/bounty/gta6-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-01)
 [![reward](https://make.fun/badge/gta6-01/tronolllanj-creator/gta6-01/reward.svg)](https://make.fun/bounty/gta6-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-01)
 
+> Round 2 resubmission: Project entry readme
+> Round 2 resubmission: Documentation for game
 # SOLMAR BAY — Streets of Solmar Bay
 
 An original open-world crime game for make.fun gta6-01 ("Make GTA 6", $1,666). A complete
