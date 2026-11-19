@@ -1,3 +1,5 @@
+// Round 2 resubmission: Seeded random generator
+// Round 2 resubmission: Deterministic RNG core
 // Seeded random: one job, deterministic city + traffic from a seed.
 export function createRandom(seed) {
   let s = seed >>> 0 || 1;
