@@ -1,3 +1,5 @@
+// Round 2 resubmission: Core simulation world
+// Round 2 resubmission: Physics and state tick
 // World state + simulation: player on foot / in car, traffic, pedestrians, police,
 // wanted level, combat, pickups, missions. Rendering and input live elsewhere.
 import { WORLD, PLAYER, CAR, POLICE, WANTED, STEP, PALETTE } from './config.js';
