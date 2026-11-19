@@ -1,3 +1,5 @@
+// Round 2 resubmission: Application boot sequence
+// Round 2 resubmission: Main game loop
 // Boot + loop: fixed 1/60 s steps, screens title / play / paused / jobs / over,
 // camera follows the player, save auto-writes, ?shot= stages a screenshot scene.
 import { STEP, VIEW } from './config.js';
