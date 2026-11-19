@@ -1,3 +1,5 @@
+// Round 2 resubmission: Missions and story lines
+// Round 2 resubmission: Job definition data
 // Story + missions. Mara Voss, ex-getaway driver, returns to Solmar Bay to pay off her
 // brother's debt to the Harbor Crew. Eight jobs, each one step at a time.
 export const STORY = {
