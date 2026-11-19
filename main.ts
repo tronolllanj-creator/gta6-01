@@ -1,41 +1,93 @@
-// A working gta6-01 entry (Node 22, standard library only): the game is this directory's
-// game/ folder, plain static files a desktop browser loads offline (game/index.html and its ES
-// modules, no library and no network request), and the program hands it in. It copies game/ and
-// screenshots/ from beside this file to /output and writes /output/dossier.json, the summary the
-// judge reads, with the vendored make.fun library. Only the plumbing, not an open world: Block
-// Dodger, a plain 2D canvas game where a paddle dodges falling blocks and catches coins, with a
-// title screen, score, lives and levels, game over and restart, flat colours and no sound. Build
-// your own open-world crime game in its place (three.js or any library you vendor under game/),
-// put your 3 or 4 PNG or JPEG screenshots in screenshots/ (the first by name is the cover) and run it.
-//
-// Serve it locally with `node serve.ts`, then open http://localhost:8080.
-// Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
-//   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+// Solmar Bay — packaging entrypoint, round 2.
+// Mirrors the static game in game/ and the screenshots in screenshots/
+// into the output folder, then writes dossier.json there with the
+// make.fun dossier builder. Node 22, standard library only.
 
-import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { buildDossier } from './vendor/makefun-game.ts';
+import { copyFile, mkdir, readdir, stat, writeFile } from 'node:fs/promises';
+import { dirname, join, relative, sep } from 'node:path';
+import { fileURLToPath as urlToPath } from 'node:url';
+import { buildDossier as makeDossier } from './vendor/makefun-game.ts';
 
-const here = fileURLToPath(new URL('.', import.meta.url));
-const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+const MAX_TEXT_BYTES = 163840;
+const MAX_SHOTS = 4;
+const MAX_SHOT_BYTES = 262144;
+const MAX_GAME_FILES = 993;
+const MAX_GAME_BYTES = 50331648;
+const MAX_GAME_PATH_BYTES = 1000;
 
-mkdirSync(out, { recursive: true });
-cpSync(join(here, 'game'), join(out, 'game'), { recursive: true });
-mkdirSync(join(out, 'screenshots'), { recursive: true });
-if (existsSync(join(here, 'screenshots'))) cpSync(join(here, 'screenshots'), join(out, 'screenshots'), { recursive: true });
+const repoRoot = dirname(urlToPath(import.meta.url));
+const outDir = pickOutDir();
 
-// The scorer's own caps (reference/gate.json): only text_max_bytes shapes the bytes; the others refuse an entry the
-// scorer would refuse (more than 4 screenshots or one over 256 KiB; more than 993 files in game/ or 48 MiB of game
-// files, in all, or a path under game/ over 1000 bytes: game/ counts beside /output's own 1000-entry cap, its
-// screenshots/ and dossier.json).
-writeFileSync(
-  join(out, 'dossier.json'),
-  buildDossier(out, {
-    text_max_bytes: 163840,
-    screenshots: { max: 4, max_bytes: 262144 },
-    game_max_files: 993,
-    game_max_bytes: 50331648,
-    game_path_max_bytes: 1000,
-  }),
-);
+function pickOutDir(): string {
+  const fromEnv = (process.env.MAKEFUN_OUTPUT_DIR ?? '').trim();
+  return fromEnv.length > 0 ? fromEnv : '/output';
+}
+
+async function collect(root: string, dir: string, acc: string[]): Promise<void> {
+  const kids = await readdir(dir, { withFileTypes: true });
+  for (const kid of kids) {
+    const full = join(dir, kid.name);
+    const rel = relative(root, full).split(sep).join('/');
+    acc.push(rel);
+    if (kid.isDirectory()) await collect(root, full, acc);
+  }
+}
+
+async function mirror(root: string, target: string): Promise<number> {
+  const entries: string[] = [];
+  await collect(root, root, entries);
+  let files = 0;
+  for (const rel of entries) {
+    const src = join(root, rel);
+    const dst = join(target, rel);
+    const info = await stat(src);
+    if (info.isDirectory()) {
+      await mkdir(dst, { recursive: true });
+      continue;
+    }
+    await mkdir(dirname(dst), { recursive: true });
+    await copyFile(src, dst);
+    files += 1;
+  }
+  return files;
+}
+
+async function packEntry(): Promise<void> {
+  await mkdir(outDir, { recursive: true });
+  const gameDir = join(repoRoot, 'game');
+  const indexPage = join(gameDir, 'index.html');
+  try {
+    await stat(indexPage);
+  } catch {
+    throw new Error('game/index.html is missing; nothing to package');
+  }
+  const gameFiles = await mirror(gameDir, join(outDir, 'game'));
+  let shotFiles = 0;
+  const shotsDir = join(repoRoot, 'screenshots');
+  try {
+    await stat(shotsDir);
+    shotFiles = await mirror(shotsDir, join(outDir, 'screenshots'));
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code !== 'ENOENT') throw err;
+  }
+  const limits = {
+    text_max_bytes: MAX_TEXT_BYTES,
+    screenshots: { max: MAX_SHOTS, max_bytes: MAX_SHOT_BYTES },
+    game_max_files: MAX_GAME_FILES,
+    game_max_bytes: MAX_GAME_BYTES,
+    game_path_max_bytes: MAX_GAME_PATH_BYTES,
+  };
+  const dossierText = await makeDossier(outDir, limits);
+  const dossierPath = join(outDir, 'dossier.json');
+  await writeFile(dossierPath, dossierText);
+  const dossierSize = Buffer.byteLength(dossierText, 'utf8');
+  console.log(`packaged ${gameFiles + shotFiles} files into ${outDir}; dossier.json is ${dossierSize} bytes`);
+}
+
+try {
+  await packEntry();
+} catch (err) {
+  console.error('packaging failed:', err);
+  process.exit(1);
+}
+// Round 2: entrypoint authored fresh in the recorded session.
