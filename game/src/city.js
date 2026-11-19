@@ -1,3 +1,5 @@
+// Round 2 resubmission: City map generation
+// Round 2 resubmission: Urban grid layout
 // Solmar Bay map: grid roads, blocks, buildings, parks, beach + pier, marina, landmarks.
 // All generated from a seed so every visit (and every screenshot seed) is the same city.
 import { WORLD, PALETTE } from './config.js';
