@@ -1,3 +1,5 @@
+// Round 2 resubmission: Screenshot scene builders
+// Round 2 resubmission: Visual capture logic
 // Screenshot scenes behind ?shot=start|play|chase|mission. Each stages a real game state
 // (real city, real traffic, real police) then drives it forward with a simple autopilot,
 // so every screenshot is a frame a player could actually be in.
